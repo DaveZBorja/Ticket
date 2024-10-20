@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Ticketing System</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Admin Dashboard</h1>
+        <h2>All Tickets</h2>
+        <div id="admin-tickets-container">
+            <!-- Tickets will be displayed here -->
+            {% for ticket in tickets %}
+                <div class="ticket">
+                    <h3>{{ ticket.title }} by {{ ticket.name }}</h3>
+                    <p>{{ ticket.description }}</p>
+                    <p>Status: {{ ticket.status }}</p>
+                </div>
+            {% endfor %}
+        </div>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+</body>
+</html>

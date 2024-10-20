@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Ticket</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    
+     <style>
+        /* Optional: Add some styling to the logo and container */
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background-color: #f8f8f8;
+        }
+
+        .header img {
+            width: 80px; /* Set the logo size */
+            height: auto;
+            margin-right: 15px; /* Space between the logo and title */
+        }
+
+        .container {
+            margin: 20px;
+        }
+
+        h1 {
+            margin-left: 5px; /* Adjust spacing */
+        }
+    </style>
+</head>
+<body>
+    <!-- Header with Logo -->
+    <div class="header">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo"> <!-- Replace with your logo filename -->
+        <h1>Create a New Ticket</h1>
+    </div>
+    <div class="container">
+       <!--  <h1>Create a New Ticket</h1>-->
+        <form id="ticketForm">
+    <input type="text" name="title" placeholder="Title" required>
+    <input type="text" name="description" placeholder="Description" required>
+    <input type="text" name="name" placeholder="Your Name" required>
+    <input type="text" name="office" placeholder="Office" required> <!-- Add this line -->
+    <button type="submit">Create Ticket</button>
+</form>
+    </div>
+    <script>
+   document.getElementById('ticketForm').onsubmit = async function (e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    const data = Object.fromEntries(formData);
+    const response = await fetch('/api/tickets', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+    });
+    if (response.ok) {
+        alert('Ticket created successfully!');
+        // Additional logic to clear the form or update the UI
+    } else {
+        alert('Error creating ticket. Please try again.');
+    }
+};
+
+    </script>
+</body>
+</html>
+

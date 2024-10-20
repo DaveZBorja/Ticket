@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    
+      <style>
+         .header {
+            display: flex;
+            justify-content: space-between; /* Distribute space between items */
+            align-items: center;
+            padding: 10px 20px; /* Add padding for spacing */
+            background-color: #f8f8f8;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .header img {
+            width: 90px; /* Logo size */
+            height: auto;
+            margin-right: 15px; /* Space between logo and title */
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px; /* Adjust font size */
+        }
+        
+        
+        .header a#logoutLink {
+            text-decoration: none;
+            color: #4CAF50;
+            font-size: 16px;
+            margin-left: auto; /* Push the link to the right */
+        }
+
+        .container {
+            margin: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        table th {
+            background-color: #f2f2f2;
+        }
+
+        table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        button {
+            margin: 5px;
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header with Logo -->
+    <div class="header">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo"> <!-- Replace with your logo filename -->
+        <h1>Admin Panel</h1>
+        
+                    <!-- <h1>Admin Panel</h1>-->
+        <a href="#" id="logoutLink">Logout</a>
+        <br>
+        <a href="{{ url_for('plot_ticket_titles') }}">View Problem Frequency Plot</a>
+<script>
+    document.getElementById('logoutLink').onclick = async function () {
+        const response = await fetch('/admin/logout', {
+            method: 'POST',
+        });
+        if (response.ok) {
+            alert('Logged out successfully!');
+            window.location.href = '/admin/login'; // Redirect to login page after logout
+        } else {
+            alert('Error logging out.');
+        }
+    };
+</script>
+
+    </div>
+    
+
+
+    <div class="container">
+
+
+        <h2>All Tickets</h2>
+        
+        <button onclick="window.location.href='/admin/export'" style="margin-bottom: 20px;">Export to CSV</button>
+        
+      <table>
+    <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Status</th>
+        <th>Name</th>
+        <th>Office</th> <!-- New column for office -->
+        <th>Created At</th>
+        <th>Actions</th>
+    </tr>
+    {% for ticket in tickets %}
+    <tr>
+        <td>{{ ticket.id }}</td>
+        <td>{{ ticket.title }}</td>
+        <td>{{ ticket.description }}</td>
+        <td>{{ ticket.status }}</td>
+        <td>{{ ticket.name }}</td>
+        <td>{{ ticket.office }}</td> <!-- Display office -->
+        <td>{{ ticket.created_at }}</td>
+        <td>
+            <form action="/api/tickets/{{ ticket.id }}" method="POST">
+                <button type="button" onclick="updateStatus({{ ticket.id }}, 'Closed')">Close</button>
+                <button type="button" onclick="deleteTicket({{ ticket.id }})">Delete</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+    </div>
+    <script>
+        async function updateStatus(id, status) {
+            await fetch(`/api/tickets/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status }),
+            });
+            window.location.reload();
+        }
+
+        async function deleteTicket(id) {
+            await fetch(`/api/tickets/${id}`, {
+                method: 'DELETE',
+            });
+            window.location.reload();
+        }
+    </script>
+</body>
+</html>
+

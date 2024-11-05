@@ -45,7 +45,7 @@ Installation
 
     bash
 
-git clone https://github.com/yourusername/ticketing-system.git
+git clone https://github.com/DaveZBorja/Ticket.git
 
 Navigate to the project directory:
 
@@ -94,8 +94,6 @@ http://127.0.0.1:5000
 You should see the "Create Ticket" page. Fill in the required details and submit a new ticket.
 
 To access the admin panel, navigate to:
-
-arduino
 
     http://127.0.0.1:5000/admin
 
@@ -177,4 +175,4 @@ License
 
 This project is licensed under the MIT License. See the LICENSE file for more details.
 
-This README.md file covers the core aspects of the project, including installation, usage, and API details. Let me know if you'd like to add or modify any section!
+
